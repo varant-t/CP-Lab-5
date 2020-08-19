@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{416A3324-E47E-9C91-5F11-06D135B65A38}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Character.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Character.cs" Line="57" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="W04_Mecanim_Setup" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Character.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="ea1d90e4-0f6f-4743-91e9-2fc3a0710e88" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
