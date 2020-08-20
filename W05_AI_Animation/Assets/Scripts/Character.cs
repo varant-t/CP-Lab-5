@@ -25,10 +25,17 @@ public class Character : MonoBehaviour
 
     Animator animator;
 
-    Enemy en;
+    public bool godModeActive;
+    public float godModeTimer;
+
+    public float jumpMultiplier;
+    public float jumpModeTimer;
+
+    public float speedMultiplier;
+    public float speedModeTimer;
+
     void Start()
     {
-        en = GetComponent<Enemy>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
@@ -67,8 +74,24 @@ public class Character : MonoBehaviour
             Debug.Log("ProjectileForce not set on " + name + ". Defaulting to " + projectileForce);
         }
 
-        // let the gameObject fall down
-        //gameObject.transform.position = new Vector3(0, 5, 0);
+        // PowerUp related variables setup
+        godModeActive = false;
+
+        if (godModeTimer <= 0)
+            godModeTimer = 2.0f;
+
+        if (jumpMultiplier <= 0)
+            jumpMultiplier = 2.0f;
+
+        if (jumpModeTimer <= 0)
+            jumpModeTimer = 2.0f;
+
+        if(speedMultiplier <= 0)
+            speedMultiplier = 2.0f;
+
+        if (speedModeTimer <= 0)
+            speedModeTimer = 3.0f;
+
     }
 
     void Update()
@@ -94,37 +117,38 @@ public class Character : MonoBehaviour
         // Move the controller
         controller.Move(moveDirection * Time.deltaTime);
 
-        // Used for the Raycast to store information about what it collides with
-        RaycastHit hit;
-
-        // If there is no thingToLookFrom, default to Character
-        if(!thingToLookFrom)
+        if (!godModeActive)
         {
-            Debug.DrawRay(transform.position, transform.forward * lookDistance, Color.red);
+            // Used for the Raycast to store information about what it collides with
+            RaycastHit hit;
 
-            if(Physics.Raycast(transform.position, transform.forward, out hit, lookDistance))
+            // If there is no thingToLookFrom, default to Character
+            if (!thingToLookFrom)
             {
-                Debug.Log("Raycast: " + hit.collider.gameObject.name);      
+                Debug.DrawRay(transform.position, transform.forward * lookDistance, Color.red);
+
+                if (Physics.Raycast(transform.position, transform.forward, out hit, lookDistance))
+                {
+                    Debug.Log("Raycast: " + hit.collider.gameObject.name);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(thingToLookFrom.position, thingToLookFrom.forward * lookDistance, Color.red);
+
+                if (Physics.Raycast(thingToLookFrom.position, thingToLookFrom.forward, out hit, lookDistance))
+                {
+                    Debug.Log("Raycast: " + hit.collider.gameObject.name);
+                }
             }
         }
-        else
-        {
-            Debug.DrawRay(thingToLookFrom.position, thingToLookFrom.forward * lookDistance, Color.red);
 
-            if (Physics.Raycast(thingToLookFrom.position, thingToLookFrom.forward, out hit, lookDistance))
-            {
-                Debug.Log("Raycast: " + hit.collider.gameObject.name);
-            }
-        }
-
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             //fire();
 
             // Use Animation Event to create projectile
             animator.SetTrigger("Attack");
-            
-           
         }
 
         animator.SetFloat("Speed", transform.TransformDirection(controller.velocity).z);
@@ -163,7 +187,10 @@ public class Character : MonoBehaviour
     // - Other GameObject must have a Collider
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log("OnControllerColliderHit: " + hit.gameObject.name);
+        if (!godModeActive)
+        {
+            Debug.Log("OnControllerColliderHit: " + hit.gameObject.name);
+        }
     }
 
     // Usage Rules:
@@ -171,7 +198,34 @@ public class Character : MonoBehaviour
     // - One or both GameObjects must have a Collider
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter: " + other.gameObject.name);
+        //Debug.Log("OnTriggerEnter: " + other.gameObject.name);
+
+        if (other.gameObject.CompareTag("PowerUp_GodMode"))
+        {
+            Destroy(other.gameObject);
+
+            godModeActive = true;
+
+            StartCoroutine(StopGodMode());
+        }
+
+        if (other.gameObject.CompareTag("PowerUp_SuperJump"))
+        {
+            Destroy(other.gameObject);
+
+            jumpSpeed *= jumpMultiplier;
+
+            StartCoroutine(StopJumpMode());
+        }
+
+        if (other.gameObject.CompareTag("PowerUp_SuperSpeed"))
+        {
+            Destroy(other.gameObject);
+
+            speed *= speedMultiplier;
+
+            StartCoroutine(StopSpeedMode());
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -184,9 +238,39 @@ public class Character : MonoBehaviour
         Debug.Log("OnTriggerStay: " + other.gameObject.name);
     }
 
-    public void HitAnimation()
+    IEnumerator StopGodMode()
     {
-        
+        yield return new WaitForSeconds(godModeTimer);
+
+        godModeActive = false;
+    }
+
+    IEnumerator StopJumpMode()
+    {
+        yield return new WaitForSeconds(jumpModeTimer);
+
+        jumpSpeed /= jumpMultiplier;
+    }
+
+    IEnumerator StopSpeedMode()
+    {
+        yield return new WaitForSeconds(jumpModeTimer);
+
+        speed /= speedMultiplier;
     }
 
 }
+
+/*
+class PowerUp
+{
+    bool active;
+    float disableTime;
+
+    IEnumerator StopPowerUp();
+}
+
+class TimedPowerUp:PowerUp
+{
+    override IEnumerator StopPowerUp();
+}*/
