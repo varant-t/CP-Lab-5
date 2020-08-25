@@ -11,6 +11,8 @@ public class WeaponPickerUpper : MonoBehaviour
     public GameObject weaponAttach2;// Used to place Weapon Object in Player
     public float weaponDropForce;    // Used to add a force when 'Character' hits something
 
+    public bool isPrimaryWeapon;
+
     public TextMeshProUGUI ammoText;
 
     // Use this for initialization
@@ -39,7 +41,7 @@ public class WeaponPickerUpper : MonoBehaviour
         {
             weaponDropForce = 10.0f;
 
-            Debug.Log("WeaponDropForce not set on " + name + ". Defaulting to " + weaponDropForce);
+           // Debug.Log("WeaponDropForce not set on " + name + ". Defaulting to " + weaponDropForce);
         }
 
         ammoText.text = string.Empty;
@@ -95,6 +97,27 @@ public class WeaponPickerUpper : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown("1") && !isPrimaryWeapon && weapon != null)
+        {
+            isPrimaryWeapon = true;
+            weapon.SetActive(true);
+            if (weapon2.transform.parent == weaponAttach.transform)
+            {
+                weapon2.SetActive(false);
+            }
+        }
+        else if (Input.GetKeyDown("2") && isPrimaryWeapon && weapon2 != null)
+        {
+            isPrimaryWeapon = false;
+            weapon2.SetActive(true);
+            if (weapon.transform.parent == weaponAttach.transform)
+            {
+                weapon.SetActive(false);
+            }
+
+        }
+
+     
         // Check if the Fire key was pressed
         if (Input.GetButtonDown("Fire1"))
         {
@@ -108,7 +131,16 @@ public class WeaponPickerUpper : MonoBehaviour
                     ammoText.text = ws.Shoot().ToString();
                 }
             }
+            else if (weapon2 != null)
+            {
+                WeaponShoot ws = weapon2.GetComponent<WeaponShoot>();
+                if (ws)
+                {
+                    ammoText.text = ws.Shoot().ToString();
+                }
+            }
         }
+
     }
 
     // Must set Collider to isTrigger to function

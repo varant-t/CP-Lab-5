@@ -43,35 +43,35 @@ public class Character : MonoBehaviour
         {
             speed = 6.0f;
 
-            Debug.Log("Speed not set on " + name + ". Defaulting to " + speed);
+           // Debug.Log("Speed not set on " + name + ". Defaulting to " + speed);
         }
 
         if (jumpSpeed <= 0)
         {
             jumpSpeed = 8.0f;
 
-            Debug.Log("JumpSpeed not set on " + name + ". Defaulting to " + jumpSpeed);
+           // Debug.Log("JumpSpeed not set on " + name + ". Defaulting to " + jumpSpeed);
         }
 
         if (gravity <= 0)
         {
             gravity = 20.0f;
 
-            Debug.Log("Gravity not set on " + name + ". Defaulting to " + gravity);
+           // Debug.Log("Gravity not set on " + name + ". Defaulting to " + gravity);
         }
 
         if (lookDistance <= 0)
         {
             lookDistance = 10.0f;
 
-            Debug.Log("LookDistance not set on " + name + ". Defaulting to " + lookDistance);
+           // Debug.Log("LookDistance not set on " + name + ". Defaulting to " + lookDistance);
         }
 
         if (projectileForce <= 0)
         {
             projectileForce = 10.0f;
 
-            Debug.Log("ProjectileForce not set on " + name + ". Defaulting to " + projectileForce);
+            //Debug.Log("ProjectileForce not set on " + name + ". Defaulting to " + projectileForce);
         }
 
         // PowerUp related variables setup
@@ -125,11 +125,11 @@ public class Character : MonoBehaviour
             // If there is no thingToLookFrom, default to Character
             if (!thingToLookFrom)
             {
-                Debug.DrawRay(transform.position, transform.forward * lookDistance, Color.red);
+               // Debug.DrawRay(transform.position, transform.forward * lookDistance, Color.red);
 
                 if (Physics.Raycast(transform.position, transform.forward, out hit, lookDistance))
                 {
-                    Debug.Log("Raycast: " + hit.collider.gameObject.name);
+                    //Debug.Log("Raycast: " + hit.collider.gameObject.name);
                 }
             }
             else
@@ -138,7 +138,7 @@ public class Character : MonoBehaviour
 
                 if (Physics.Raycast(thingToLookFrom.position, thingToLookFrom.forward, out hit, lookDistance))
                 {
-                    Debug.Log("Raycast: " + hit.collider.gameObject.name);
+                   // Debug.Log("Raycast: " + hit.collider.gameObject.name);
                 }
             }
         }
@@ -157,7 +157,7 @@ public class Character : MonoBehaviour
 
     void fire()
     {
-        Debug.Log("Pew Pew");
+       // Debug.Log("Pew Pew");
 
         Rigidbody temp = Instantiate(projectilePrefab, projectileSpawnPoint.position, projectileSpawnPoint.rotation);
 
@@ -169,17 +169,17 @@ public class Character : MonoBehaviour
     // - One or both GameObjects must have a Rigidbody
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("OnCollisionEnter: " + collision.gameObject.name);
+       // Debug.Log("OnCollisionEnter: " + collision.gameObject.name);
     }
 
     void OnCollisionExit(Collision collision)
     {
-        Debug.Log("OnCollisionExit: " + collision.gameObject.name);
+       // Debug.Log("OnCollisionExit: " + collision.gameObject.name);
     }
 
     void OnCollisionStay(Collision collision)
     {
-        Debug.Log("OnCollisionStay: " + collision.gameObject.name);
+       // Debug.Log("OnCollisionStay: " + collision.gameObject.name);
     }
 
     // Usage Rules:
@@ -189,7 +189,7 @@ public class Character : MonoBehaviour
     {
         if (!godModeActive)
         {
-            Debug.Log("OnControllerColliderHit: " + hit.gameObject.name);
+           // Debug.Log("OnControllerColliderHit: " + hit.gameObject.name);
         }
     }
 
@@ -230,12 +230,12 @@ public class Character : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("OnTriggerExit: " + other.gameObject.name);
+       // Debug.Log("OnTriggerExit: " + other.gameObject.name);
     }
 
     void OnTriggerStay(Collider other)
     {
-        Debug.Log("OnTriggerStay: " + other.gameObject.name);
+       // Debug.Log("OnTriggerStay: " + other.gameObject.name);
     }
 
     IEnumerator StopGodMode()
